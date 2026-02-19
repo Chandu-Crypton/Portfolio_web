@@ -90,7 +90,7 @@ export default function Projects() {
   ];
 
   return (
-    <div id="projects" className="pt-28 mb-12">
+    <div id="projects" className="pt-18 mb-12">
       <p
         className={`text-3xl font-bold flex justify-center mb-8 ${
           isDarkMode ? "text-white" : "text-gray-900"
@@ -98,7 +98,7 @@ export default function Projects() {
       >
         Projects
       </p>
-      <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-2">
+      <div className="w-[300px] md:w-[700px] lg:w-[1200px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-2">
         {projects.map((project, index) => (
           <div
             key={index}

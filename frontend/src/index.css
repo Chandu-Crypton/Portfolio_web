@@ -1,9 +1,11 @@
 @import "tailwindcss";
 
-body {
-  background-color: #f8fafc;
-  color: #1e293b;
-  font-family: "Inter", sans-serif;
+/* Configure dark mode to use class strategy */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Your custom styles */
+html {
+  scroll-behavior: smooth;
 }
 
 .project-card {
@@ -14,6 +16,15 @@ body {
   transform: translateY(-2px);
 }
 
-html {
-  scroll-behavior: smooth;
+/* Ensure body has no default background that conflicts */
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background-color: #f9fafb; /* Light mode fallback */
+}
+
+/* Dark mode body style */
+.dark body {
+  background-color: #111827;
 }
