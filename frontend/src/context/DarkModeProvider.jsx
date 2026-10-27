@@ -7,11 +7,12 @@ const DarkModeProvider = ({ children }) => {
 
     useEffect(() => {
         const storedPreference = localStorage.getItem("theme");
-        const prefersDarkMode = storedPreference === "dark";
+        // Default to dark theme unless user explicitly chose light
+        const isDark = storedPreference ? storedPreference === "dark" : true;
 
-        setIsDarkMode(prefersDarkMode);
+        setIsDarkMode(isDark);
 
-        if (prefersDarkMode) {
+        if (isDark) {
             document.documentElement.classList.add("dark");
         } else {
             document.documentElement.classList.remove("dark");

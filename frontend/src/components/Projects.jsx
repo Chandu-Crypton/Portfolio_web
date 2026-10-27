@@ -1,191 +1,253 @@
-import React from "react";
+import React, { useState, useContext } from "react";
 import { DarkModeContext } from "../context/DarkModeProvider";
-import { FaGithub, FaExternalLinkAlt } from "react-icons/fa";
+import { FaGithub, FaExternalLinkAlt, FaFolderOpen, FaArrowRight } from "react-icons/fa";
 
 export default function Projects() {
-  const { isDarkMode } = React.useContext(DarkModeContext);
+  const { isDarkMode } = useContext(DarkModeContext);
+  const [filter, setFilter] = useState("all");
 
   const projects = [
-     {
-      image:
-        "data:image/jpeg;base64,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",
+    {
+      id: "socially",
       title: "Socially Web Application",
+      category: "fullstack",
+      status: "LIVE // FULL-STACK",
+      badge: "NEXT.JS + POSTGRESQL",
+      image:
+        "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80",
       description:
-        "Socially — a modern, Twitter-inspired social platform built with a powerful full-stack architecture for real-time interaction and seamless user experience.",
-      tagsRow1: [
-        "Type Script",
-        "Next Js",
-        "PostgreSQL",
-        "Tailwind CSS",
-      ],
-      tagsRow2: ["Node Js", "Express Js"],
+        "A modern, Twitter/X-inspired social platform built with Next.js and PostgreSQL for real-time social feeds, user profiles, and seamless cross-device responsiveness.",
+      tags: ["TypeScript", "Next.js", "PostgreSQL", "Tailwind CSS", "Node.js", "Express.js"],
       source: "https://github.com/Chandu-Crypton/next-js-socially",
       website: "https://next-js-socially-ashen.vercel.app/",
+      accent: "cyan",
     },
     {
+      id: "chat",
+      title: "Real-Time Chat Application",
+      category: "realtime",
+      status: "LIVE // WEBSOCKETS",
+      badge: "SOCKET.IO + MERN",
       image:
         "https://files.ably.io/ghost/prod/2023/01/build-a-realtime-chat-app-from-scratch--1-.png",
-      title: "Real-Time Chat Application",
       description:
-        "Built a responsive chat app with group chat rooms and instant messaging using Socket.io. Implemented seamless cross-device UI with Tailwind CSS.",
-      tagsRow1: [
-        "Type Script",
-        "React Js",
-        "Vite",
-        "Tailwind CSS",
-        "Web Sockets",
-      ],
-      tagsRow2: ["Node Js", "Express Js", "Mongo DB"],
+        "Responsive real-time chat application with instant group messaging, live user presence, and bidirectional WebSockets powered by Socket.io, Node.js, and MongoDB.",
+      tags: ["TypeScript", "React.js", "WebSockets", "Vite", "Tailwind CSS", "Node.js", "MongoDB"],
       source: "https://github.com/Chandu-Crypton/Real_chat",
       website: "https://mern-auth-chat.onrender.com/",
+      accent: "red",
     },
     {
+      id: "globalform",
+      title: "GlobalForm: Multi-Currency Intake",
+      category: "fullstack",
+      status: "LIVE // ADAPTABLE",
+      badge: "GLOBAL ADAPTABILITY",
       image:
-        "https://static.vecteezy.com/system/resources/previews/005/419/001/original/illustration-of-customer-data-user-data-customer-analytic-user-personal-data-costumer-statistic-can-be-used-for-web-landing-page-social-media-mobile-apps-animation-etc-vector.jpg",
-      title: "GlobalForm: Multi-functional User Data Form",
+        "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80",
       description:
-        "GlobalForm – A dynamic, responsive user data form with global adaptability. Key features include multi-language support, multi-currency, timezone handling, and user data management.",
-      tagsRow1: ["Java Script", "React Js", "Vite", "Tailwind CSS", "Node Js"],
-      tagsRow2: ["Express Js", "Mongo DB"],
+        "A dynamic, responsive user data form engine with global adaptability, featuring automated multi-currency conversion, timezone handling, and MongoDB storage.",
+      tags: ["JavaScript", "React.js", "Vite", "Tailwind CSS", "Node.js", "Express.js", "MongoDB"],
       source: "https://github.com/Chandu-Crypton/Global_Form",
       website: "https://chandusrikakulam-global-formlive.vercel.app/",
+      accent: "gold",
     },
     {
+      id: "memeverse",
+      title: "MemeVerse Media Platform",
+      category: "fullstack",
+      status: "LIVE // PERSISTENT",
+      badge: "MEDIA COMMUNITY",
       image: "https://i.imgflip.com/5hnn44.jpg",
-      title: "Meme Sharing and Profile Management Application",
       description:
-        "MemeVerse – A fun social platform for uploading, viewing, and managing memes. Users can personalize their profile with bios and profile pictures, and view their uploaded memes. Features include local storage persistence, responsive UI, and a dark mode toggle for enhanced experience.",
-      tagsRow1: ["Java Script", "React Js", "Vite", "Tailwind CSS"],
-      tagsRow2: ["Node Js", "Express Js", "Mongo DB"],
+        "A social platform for uploading, discovering, and curating memes. Features personalized user profiles, persistent local storage, responsive UI, and dark mode toggle.",
+      tags: ["JavaScript", "React.js", "Vite", "Tailwind CSS", "Node.js", "MongoDB"],
       source: "https://github.com/Chandu-Crypton/Meme_Verse",
       website: "https://chandu-meme-verse-live.vercel.app/",
+      accent: "purple",
     },
     {
+      id: "formbuilder",
+      title: "Interactive Form Builder",
+      category: "frontend",
+      status: "LIVE // MODULAR",
+      badge: "DYNAMIC SCHEMA",
       image:
-        "https://tse1.mm.bing.net/th?id=OIP.HlpBrsTAM_74bz4TEjyQRwHaEo&pid=Api&P=0&h=180",
-      title: "Form Builder",
+        "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=800&q=80",
       description:
-        " A customizable form creation tool supporting text inputs, grid-style questions, and multiple-choice fields.",
-      tagsRow1: [
-        "React js",
-        "Vite",
-        "Tailwind CSS",
-      ],
-      
+        "A customizable form creation tool supporting dynamic text inputs, grid-style questions, multiple-choice validation, and intuitive state management.",
+      tags: ["React.js", "Vite", "Tailwind CSS", "State Management"],
       source: "https://github.com/Chandu-Crypton/Form-Builder",
       website: "https://form-builder-pearl.vercel.app/",
+      accent: "cyan",
     },
     {
+      id: "restaurant",
+      title: "Restaurant Web Application",
+      category: "fullstack",
+      status: "LIVE // FULL-STACK",
+      badge: "RESPONSIVE RESTAURANT",
       image:
-        "https://tse2.mm.bing.net/th?id=OIP.Ds9CdC3CtvfRoaDqevltMwHaGu&pid=Api&P=0&h=180",
-      title: "Restaurant Website",
+        "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80",
       description:
-        "Designed and built a responsive website with sections like Home, About, Qualities, Team, and Menu.",
-      tagsRow1: ["Java Script", "React Js", "Bootstrap", "Vite", "Node Js"],
-      tagsRow2: ["Express Js", "Mongo DB"],
+        "Designed and built a responsive restaurant website featuring interactive menu sections, chef and team profiles, online reservations, and full-stack backend integration.",
+      tags: ["JavaScript", "React.js", "Bootstrap", "Node.js", "Express.js", "MongoDB"],
       source: "https://github.com/Chandu-Crypton/Deployment",
-      website: "https://new-repo-ebon.vercel.app/"
+      website: "https://new-repo-ebon.vercel.app/",
+      accent: "red",
     },
-   
   ];
 
+  const filteredProjects =
+    filter === "all"
+      ? projects
+      : projects.filter((p) => p.category === filter);
+
   return (
-    <div id="projects" className="pt-18 mb-12">
-      <p
-        className={`text-3xl font-bold flex justify-center mb-8 ${
-          isDarkMode ? "text-white" : "text-gray-900"
-        }`}
-      >
-        Projects
-      </p>
-      <div className="w-[300px] md:w-[700px] lg:w-[1200px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-2">
-        {projects.map((project, index) => (
-          <div
-            key={index}
-            className={`p-4 rounded-lg w-full ${
-              isDarkMode ? "bg-gray-800" : "bg-white"
-            } border ${isDarkMode ? "border-gray-700" : "border-gray-400"}`}
-          >
-            <img
-              src={project.image}
-              alt={project.title}
-              className="w-12 h-12 rounded-full object-fit"
-            />
+    <section id="projects" className="relative py-8 sm:py-14 px-4 max-w-7xl mx-auto z-10">
+      {/* Marvel Section Header */}
+      <div className="text-center mb-4 sm:mb-6">
+        <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 mb-2 rounded-full text-[10px] font-hud tracking-widest bg-red-600/10 dark:bg-red-600/20 border border-red-500/40 text-red-600 dark:text-red-400 uppercase">
+          <FaFolderOpen className="text-red-500" /> PORTFOLIO MISSIONS // CHANDU SRIKAKULAM
+        </div>
+        <h2 className="text-3xl sm:text-5xl font-bold font-marvel tracking-wider text-gray-950 dark:text-white mb-1">
+          FEATURED <span className="text-[#ED1D24] drop-shadow-[0_0_15px_rgba(237,29,36,0.4)]">PROJECTS</span> & APPS
+        </h2>
+        <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 max-w-xl mx-auto font-body">
+          Swipe horizontally or filter to explore full-stack apps built with Next.js, React, Node.js, and WebSockets.
+        </p>
 
-            <h3
-              className={`text-lg font-semibold mb-2 ${
-                isDarkMode ? "text-white" : "text-gray-900"
+        {/* Horizontal Scrollable Filter Tabs (No vertical stacking on mobile!) */}
+        <div className="flex overflow-x-auto no-scrollbar gap-1.5 sm:gap-2 justify-start sm:justify-center py-2 px-1 max-w-full">
+          {[
+            { id: "all", label: "ALL PROJECTS" },
+            { id: "fullstack", label: "FULL STACK" },
+            { id: "realtime", label: "REAL-TIME CHAT" },
+            { id: "frontend", label: "FRONTEND APPS" },
+          ].map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => setFilter(tab.id)}
+              className={`whitespace-nowrap shrink-0 px-3 py-1.5 rounded-lg text-[11px] font-hud font-bold tracking-wider uppercase transition-all border ${
+                filter === tab.id
+                  ? "bg-[#ED1D24] text-white border-red-500 shadow-[0_0_12px_rgba(237,29,36,0.5)]"
+                  : "bg-white/60 dark:bg-black/40 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-800 hover:border-red-500/50"
               }`}
             >
-              {project.title}
-            </h3>
-            <p
-              className={`text-sm mb-3 ${
-                isDarkMode ? "text-gray-300" : "text-gray-600"
-              }`}
-            >
-              {project.description}
-            </p>
-
-            <div className="flex flex-wrap gap-1 mb-1">
-              {project.tagsRow1.map((tag, i) => (
-                <span
-                  key={`row1-${i}`}
-                  className={`text-xs px-2 py-0.5 rounded-full ${
-                    isDarkMode
-                      ? "bg-gray-700 text-gray-300"
-                      : "bg-gray-100 text-gray-800"
-                  }`}
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
-
-            {project.tagsRow2?.length > 0 && (
-              <div className="flex flex-wrap gap-1 mb-2">
-                {project.tagsRow2.map((tag, i) => (
-                  <span
-                    key={`row2-${i}`}
-                    className={`text-xs px-2 py-0.5 rounded-full ${
-                      isDarkMode
-                        ? "bg-gray-700 text-gray-300"
-                        : "bg-gray-100 text-gray-800"
-                    }`}
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            )}
-
-            {(project.source || project.website) && (
-              <div className="flex gap-4 mt-4">
-                {project.source && (
-                  <a
-                    href={project.source}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-1 text-gray-600 bg-gray-100 border border-gray-300 px-3 py-1 rounded-full hover:bg-gray-200 transition"
-                  >
-                    <FaGithub /> Source
-                  </a>
-                )}
-                {project.website && (
-                  <a
-                    href={project.website}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-1 text-gray-600 bg-gray-100 border border-gray-300 px-3 py-1 rounded-full hover:bg-gray-200 transition"
-                  >
-                    <FaExternalLinkAlt /> Website
-                  </a>
-                )}
-              </div>
-            )}
-          </div>
-        ))}
+              {tab.label}
+            </button>
+          ))}
+        </div>
       </div>
-    </div>
+
+      {/* Mobile Swipe Hint */}
+      <div className="flex items-center justify-between text-[11px] font-hud text-gray-500 dark:text-gray-400 mb-2 px-1 md:hidden">
+        <span>SWIPE HORIZONTALLY ➔</span>
+        <span className="text-red-500 font-bold">{filteredProjects.length} Projects</span>
+      </div>
+
+      {/* Projects Grid: Horizontal Snap Carousel on Mobile, 2/3 Columns on Desktop */}
+      <div className="flex overflow-x-auto snap-x snap-mandatory gap-3 sm:gap-5 pb-3 md:grid md:grid-cols-2 lg:grid-cols-3 md:overflow-visible no-scrollbar">
+        {filteredProjects.map((project) => {
+          const accentBorder =
+            project.accent === "cyan"
+              ? "hover:border-cyan-400 group-hover:shadow-[0_0_20px_rgba(0,240,255,0.25)]"
+              : project.accent === "gold"
+              ? "hover:border-amber-400 group-hover:shadow-[0_0_20px_rgba(245,158,11,0.25)]"
+              : project.accent === "purple"
+              ? "hover:border-purple-400 group-hover:shadow-[0_0_20px_rgba(168,85,247,0.25)]"
+              : "hover:border-red-500 group-hover:shadow-[0_0_20px_rgba(237,29,36,0.25)]";
+
+          return (
+            <div
+              key={project.id}
+              className={`w-[82vw] max-w-[320px] shrink-0 snap-center md:w-auto group relative rounded-xl overflow-hidden bg-white/80 dark:bg-[#0c101b]/95 border border-gray-200 dark:border-gray-800 backdrop-blur-xl flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 ${accentBorder}`}
+            >
+              {/* Corner Accents */}
+              <div className="hud-corner-tl border-red-500/40 group-hover:border-red-500 transition-colors" />
+              <div className="hud-corner-tr border-red-500/40 group-hover:border-red-500 transition-colors" />
+              <div className="hud-corner-bl border-cyan-400/40 group-hover:border-cyan-400 transition-colors" />
+              <div className="hud-corner-br border-cyan-400/40 group-hover:border-cyan-400 transition-colors" />
+
+              {/* Banner Image */}
+              <div className="relative h-36 sm:h-40 w-full overflow-hidden bg-gray-900">
+                <img
+                  src={project.image}
+                  alt={project.title}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0c101b] via-[#0c101b]/30 to-transparent" />
+
+                {/* Top Status Badges */}
+                <div className="absolute top-2 left-2 right-2 flex items-center justify-between">
+                  <span className="px-2 py-0.5 rounded text-[9px] font-hud font-bold tracking-wider uppercase bg-black/80 text-red-400 border border-red-500/40">
+                    {project.status}
+                  </span>
+                  <span className="px-2 py-0.5 rounded text-[9px] font-hud font-bold tracking-wider uppercase bg-black/80 text-cyan-300 border border-cyan-500/40">
+                    {project.badge}
+                  </span>
+                </div>
+              </div>
+
+              {/* Content */}
+              <div className="p-3.5 sm:p-4 flex-1 flex flex-col justify-between">
+                <div>
+                  <h3 className="text-base sm:text-lg font-bold font-hud tracking-wide text-gray-950 dark:text-white mb-1.5 group-hover:text-red-500 transition-colors">
+                    {project.title}
+                  </h3>
+                  <p className="text-xs text-gray-600 dark:text-gray-300 leading-relaxed font-body mb-3 line-clamp-3">
+                    {project.description}
+                  </p>
+                </div>
+
+                <div>
+                  {/* Tech Arsenal Tags */}
+                  <div className="flex flex-wrap gap-1 mb-3">
+                    {project.tags.slice(0, 5).map((tag, i) => (
+                      <span
+                        key={i}
+                        className="inline-flex items-center gap-1 text-[10px] font-hud px-2 py-0.5 rounded bg-gray-100 dark:bg-gray-800/80 border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300"
+                      >
+                        <span className="w-1 h-1 rounded-full bg-cyan-400" />
+                        {tag}
+                      </span>
+                    ))}
+                    {project.tags.length > 5 && (
+                      <span className="text-[10px] font-hud px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-800 text-gray-500">
+                        +{project.tags.length - 5}
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Actions */}
+                  <div className="flex items-center gap-2 pt-2 border-t border-gray-200 dark:border-gray-800/80">
+                    {project.website && (
+                      <a
+                        href={project.website}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex-1 py-1.5 px-2 rounded-lg text-[11px] font-hud font-bold tracking-wider text-white uppercase bg-gradient-to-r from-red-600 to-[#ED1D24] shadow-sm flex items-center justify-center gap-1 hover:brightness-110 transition-all"
+                      >
+                        <FaExternalLinkAlt className="text-[9px]" /> DEMO
+                      </a>
+                    )}
+                    {project.source && (
+                      <a
+                        href={project.source}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex-1 py-1.5 px-2 rounded-lg text-[11px] font-hud font-bold tracking-wider text-gray-800 dark:text-white uppercase bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 border border-gray-300 dark:border-gray-700 flex items-center justify-center gap-1 transition-all"
+                      >
+                        <FaGithub /> CODE
+                      </a>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </section>
   );
 }

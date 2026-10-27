@@ -3,28 +3,169 @@
 /* Configure dark mode to use class strategy */
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* Your custom styles */
+/* Marvel & Stark Tech Font Utility Classes */
+.font-marvel {
+  font-family: 'Bebas Neue', 'Impact', sans-serif;
+  letter-spacing: 0.06em;
+}
+
+.font-hud {
+  font-family: 'Orbitron', monospace, sans-serif;
+}
+
+.font-body {
+  font-family: 'Outfit', sans-serif;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #080a10;
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #ed1d24, #b91c1c);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #ff3b30;
+}
+
+/* Hide scrollbar for clean horizontal carousel swiping */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Marvel Glow Utilities */
+.glow-marvel-red {
+  box-shadow: 0 0 25px rgba(237, 29, 36, 0.45);
+}
+
+.glow-marvel-cyan {
+  box-shadow: 0 0 25px rgba(0, 240, 255, 0.45);
+}
+
+.glow-marvel-gold {
+  box-shadow: 0 0 25px rgba(245, 158, 11, 0.45);
+}
+
+.glow-text-red {
+  text-shadow: 0 0 16px rgba(237, 29, 36, 0.7);
+}
+
+.glow-text-cyan {
+  text-shadow: 0 0 16px rgba(0, 240, 255, 0.7);
+}
+
+/* Arc Reactor Pulse Keyframes */
+@keyframes arcPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.85;
+    box-shadow: 0 0 20px #00f0ff, inset 0 0 15px #00f0ff;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
+    box-shadow: 0 0 35px #00f0ff, 0 0 55px rgba(0, 240, 255, 0.6), inset 0 0 25px #00f0ff;
+  }
+}
+
+.animate-arc-pulse {
+  animation: arcPulse 3s ease-in-out infinite;
+}
+
+/* Subtle holographic scanline */
+@keyframes scanline {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(1000%);
+  }
+}
+
+.scanline-effect {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 8px;
+  background: linear-gradient(180deg, transparent, rgba(0, 240, 255, 0.25), transparent);
+  animation: scanline 6s linear infinite;
+  pointer-events: none;
+}
+
+/* Comic dot pattern */
+.comic-dots-dark {
+  background-image: radial-gradient(rgba(237, 29, 36, 0.12) 1.5px, transparent 1.5px);
+  background-size: 24px 24px;
+}
+
+.comic-dots-light {
+  background-image: radial-gradient(rgba(237, 29, 36, 0.08) 1.5px, transparent 1.5px);
+  background-size: 24px 24px;
+}
+
+/* HUD Corner Brackets */
+.hud-corner-tl {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 12px;
+  height: 12px;
+  border-top: 2px solid;
+  border-left: 2px solid;
+}
+.hud-corner-tr {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 12px;
+  height: 12px;
+  border-top: 2px solid;
+  border-right: 2px solid;
+}
+.hud-corner-bl {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 12px;
+  height: 12px;
+  border-bottom: 2px solid;
+  border-left: 2px solid;
+}
+.hud-corner-br {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 12px;
+  height: 12px;
+  border-bottom: 2px solid;
+  border-right: 2px solid;
+}
+
 html {
   scroll-behavior: smooth;
 }
 
-.project-card {
-  transition: all 0.3s ease;
-}
-
-.project-card:hover {
-  transform: translateY(-2px);
-}
-
-/* Ensure body has no default background that conflicts */
 body {
   margin: 0;
   padding: 0;
   min-height: 100vh;
-  background-color: #f9fafb; /* Light mode fallback */
+  background-color: #f8fafc;
 }
 
-/* Dark mode body style */
 .dark body {
-  background-color: #111827;
+  background-color: #080a10;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
 }

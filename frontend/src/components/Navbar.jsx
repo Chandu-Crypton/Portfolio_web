@@ -14,7 +14,7 @@ const Navbar = () => {
 
   const socialLinks = [
     {
-      href: "https://drive.google.com/file/d/1tiER10YvgXygfmi_8X41UQv6JXCaFuv4/view?usp=sharing",
+      href: "https://drive.google.com/file/d/13TNX8vXgS4Nk9sMam8hp0l1QqdeiLaRM/view?usp=sharing",
       icon: FiFileText,
       label: "Resume",
     },
